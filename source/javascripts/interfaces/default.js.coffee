@@ -1,5 +1,6 @@
 #= require vendor/jquery-2.0.3
 #= require vendor/angular
+#= require vendor/angular-cookies
 #= require vendor/jquery.magnific-popup.min
 #= require vendor/d3-3.4.11.min
 #= require_self
@@ -12,11 +13,12 @@ $ ->
     $(@).magnificPopup('open')
   )
 
-adminApp = angular.module "adminApp", []
+adminApp = angular.module "adminApp", ["ngCookies"]
 
-adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", ($scope, $location, $q) ->
+adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", "$cookieStore", ($scope, $location, $q, $cookieStore) ->
   $scope.data = []
   $scope.readQuery = null
+  $scope.graphData = if $cookieStore.get("graphData")? then $cookieStore.get("graphData") else true
   $scope.writeSeriesName = null
   $scope.writeValues = null
   $scope.successMessage = "OK"
@@ -50,8 +52,13 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", ($scope, $lo
           name: datum.name
           columns: datum.columns
           points: datum.points
-          graphs: $scope.filteredColumns(datum).map (column) ->
-            $scope.columnPoints(datum, column)
+          graphs: if $scope.graphData
+                    $scope.filteredColumns(datum).map (column) ->
+                      $scope.columnPoints(datum, column)
+                  else
+                    []
+      $scope.storeSettings()
+
     , (response) ->
       $scope.queryMessage = "ERROR: #{response.responseText}"
       $("span#queryFailure").show().delay(2500).fadeOut(1000)
@@ -79,6 +86,9 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", ($scope, $lo
     points: datum.points.map (row) ->
       time: new Date(row[0])
       value: row[index]
+
+  $scope.storeSettings = () ->
+    $cookieStore.put("graphData", $scope.graphData)
 
   if $scope.username && $scope.password && $scope.database
     $scope.authenticate()

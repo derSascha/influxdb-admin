@@ -25,6 +25,8 @@ html
                     p.input_help
                       | InfluxDB features a &nbsp;
                       a#queryHelp.modal-help-link target="_self" href="/help/queries.html" SQL-like query language
+                    input type="checkbox" ng-model="graphData" id="graphData"
+                    label for="graphData" Graph data
                     button.tiny.button ng-click="readData()" Execute Query
                     span.label.alert#queryFailure style="display:none; margin-left:20px;" {{queryMessage}}
 
