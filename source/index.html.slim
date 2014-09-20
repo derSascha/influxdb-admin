@@ -23,8 +23,8 @@
             .large-1.columns
               input type="text" placeholder="port" ng-model="port"
             .large-2.columns style="padding-top: 10px;"
-              input type="checkbox" ng-model="ssl"
-              label SSL
+              input type="checkbox" ng-model="ssl" id="ssl"
+              label for="ssl" SSL
             .large-6.columns
 
     div ng-show="authenticated"
@@ -236,8 +236,8 @@
                 .row
                   .large-6.columns
                     fieldset
-                      input type="checkbox" ng-model="databaseUser.isAdmin"
-                        label Admin?
+                      input type="checkbox" ng-model="databaseUser.isAdmin" id="isAdmin"
+                        label for="isAdmin" Admin?
                 .row
                   .large-6.columns
                     button.small.button ng-click="updateDatabaseUser()" Update User
@@ -283,8 +283,8 @@
                       .large-3.columns
                         input type="password" placeholder="Password" ng-model="newDbUser.password"
                       .large-3.columns style="padding-top:10px;"
-                        input type="checkbox" ng-model="newDbUser.isAdmin"
-                          label Admin?
+                        input type="checkbox" ng-model="newDbUser.isAdmin" id="isAdmin"
+                          label for="isAdmin" Admin?
                       .large-3.columns
                         button.tiny.button ng-click="createDatabaseUser()" Create
 
